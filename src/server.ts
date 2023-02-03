@@ -31,7 +31,10 @@ import { filterImageFromURL, deleteLocalFiles } from "./util/util";
     if (!("image_url" in req.query)) {
       return res.status(400).json({ message: "No image_url in params" });
     }
-    const { image_url } = req.query;
+    const { image_url }: { image_url: string } = req.query!;
+    if (typeof image_url !== "string") {
+      return res.status(401).json({ message: "URL is not a string"})
+    }
     // check the url
     if (!Boolean(new URL(image_url))) {
       return res.status(400).json({ message: "Not a url" });
